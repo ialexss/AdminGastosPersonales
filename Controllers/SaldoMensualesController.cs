@@ -8,23 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using GastosPersonales.Data;
 using GastosPersonales.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace GastosPersonales.Controllers
 {
     public class SaldoMensualesController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
+        private readonly ApplicationDbContext _context;       
         public SaldoMensualesController(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context;        
+
         }
 
         // GET: SaldoMensuales
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.SaldoMensual.Include(s => s.User);
+            //Trae el usuario que inicio sesion
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var applicationDbContext = _context.SaldoMensual.Include(s => s.User).Where(c => c.UserId == userId);
             return View(await applicationDbContext.ToListAsync());
         }
 

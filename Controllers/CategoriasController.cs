@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GastosPersonales.Data;
 using GastosPersonales.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GastosPersonales.Controllers
 {
@@ -20,6 +21,7 @@ namespace GastosPersonales.Controllers
         }
 
         // GET: Categorias
+        [Authorize]
         public async Task<IActionResult> Index()
         {
               return _context.Categoria != null ? 

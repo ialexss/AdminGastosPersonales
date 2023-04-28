@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GastosPersonales.Data;
 using GastosPersonales.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GastosPersonales.Controllers
 {
@@ -21,12 +20,10 @@ namespace GastosPersonales.Controllers
         }
 
         // GET: Comprobantes
-        [Authorize]
         public async Task<IActionResult> Index()
         {
-              return _context.Comprobante != null ? 
-                          View(await _context.Comprobante.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Comprobante'  is null.");
+            var applicationDbContext = _context.Comprobante.Include(c => c.Categoria).Include(c => c.User);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Comprobantes/Details/5
@@ -38,6 +35,8 @@ namespace GastosPersonales.Controllers
             }
 
             var comprobante = await _context.Comprobante
+                .Include(c => c.Categoria)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comprobante == null)
             {
@@ -50,6 +49,8 @@ namespace GastosPersonales.Controllers
         // GET: Comprobantes/Create
         public IActionResult Create()
         {
+            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -58,7 +59,7 @@ namespace GastosPersonales.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Detalle,Fecha,Costo,Tipo,Activo,Imagen,UserId")] Comprobante comprobante)
+        public async Task<IActionResult> Create([Bind("Id,Detalle,Fecha,Costo,Tipo,Activo,Imagen,UserId,CategoriaId")] Comprobante comprobante)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +67,8 @@ namespace GastosPersonales.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre", comprobante.CategoriaId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comprobante.UserId);
             return View(comprobante);
         }
 
@@ -82,6 +85,8 @@ namespace GastosPersonales.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre", comprobante.CategoriaId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comprobante.UserId);
             return View(comprobante);
         }
 
@@ -90,7 +95,7 @@ namespace GastosPersonales.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Detalle,Fecha,Costo,Tipo,Activo,Imagen,UserId")] Comprobante comprobante)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Detalle,Fecha,Costo,Tipo,Activo,Imagen,UserId,CategoriaId")] Comprobante comprobante)
         {
             if (id != comprobante.Id)
             {
@@ -117,6 +122,8 @@ namespace GastosPersonales.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre", comprobante.CategoriaId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comprobante.UserId);
             return View(comprobante);
         }
 
@@ -129,6 +136,8 @@ namespace GastosPersonales.Controllers
             }
 
             var comprobante = await _context.Comprobante
+                .Include(c => c.Categoria)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comprobante == null)
             {

@@ -20,8 +20,8 @@ namespace GastosPersonales.Models
         public bool Activo { get; set; }
         public byte[]? Imagen { get; set;}
         public string UserId { get; set; }
-        [ForeignKey("CategoriaId")]
-        public virtual Categoria Categoria { get; set; }
+        public int CategoriaId { get; set; }
+        public Categoria Categoria { get; set; }
         public IdentityUser User { get; set; }
 
     }

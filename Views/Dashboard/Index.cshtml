@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "Informes";
+}
+
+<div class="row mt-0-2">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Ingresos ultimos 30 dias
+            </div>
+            <div class="card-body">
+                <canvas id="chartIngresos" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Gastos ultimos 30 dias
+            </div>
+            <div class="card-body">
+                <canvas id="chartGastos" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+    
+    <script>
+
+       function resumenIngresos(){
+            fetch("Dashboard/InformeIngresosFecha")
+            .then((response)=>{
+                return response.ok? response.json():Promise.reject(response);
+            })
+            .then((dataJson)=>{
+
+                //ASIGNAR ITEMS
+                const labels = dataJson.map((item) =>{ return item.fecha})
+                const values = dataJson.map((item) => { return item.saldo })
+
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ingresos',
+                        data: values,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+                const config = {
+                    type: 'line',
+                    data: data,
+                };
+
+                const canvasLinea = document.getElementById("chartIngresos");
+
+                const graficoLinea = new Chart(canvasLinea,config);
+
+            }).catch((error) =>{
+                console.log(error)
+            })
+        }
+
+      
+
+        //GASTOS INFORME
+        function resumenEgresos() {
+            fetch("Dashboard/InformeGastosFecha")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+                    //ASIGNAR ITEMS
+                    const labels = dataJson.map((item) => { return item.fecha })
+                    const values = dataJson.map((item) => { return item.saldo })
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Gastos',
+                            data: values,
+                            fill: false,
+                            borderColor: 'rgb(255, 11, 41)',
+                            tension: 0.1
+                        }]
+                    };
+                    const config = {
+                        type: 'line',
+                        data: data,
+                    };
+
+                    const canvasLinea = document.getElementById("chartGastos");
+
+                    const graficoLinea = new Chart(canvasLinea, config);
+
+                }).catch((error) => {
+                    console.log(error)
+                })
+        }
+
+        $(document).ready(()=>{
+            resumenIngresos();
+            resumenEgresos();
+
+        })
+
+    </script>
+    
+}

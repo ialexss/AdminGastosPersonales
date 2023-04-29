@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GastosPersonales.Data;
 using GastosPersonales.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GastosPersonales.Controllers
 {
@@ -19,7 +18,7 @@ namespace GastosPersonales.Controllers
         {
             _context = context;
         }
-        [Authorize]
+
         // GET: Comprobantes
         public async Task<IActionResult> Index()
         {

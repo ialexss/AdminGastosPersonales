@@ -19,7 +19,7 @@ namespace GastosPersonales.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Detalle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Costo = table.Column<decimal>(type: "money", nullable: false),
+                    Costo = table.Column<decimal>(type: "decimal", nullable: false),
                     Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Activo = table.Column<bool>(type: "bit", nullable: false),
                     Imagen = table.Column<byte[]>(type: "varbinary(max)", nullable: true),

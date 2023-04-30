@@ -29,12 +29,15 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+
+        string nombreMes = new DateTime(1, item.Mes, 1).ToString("MMMM");
+
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Mes)
+                    @Html.DisplayFor(modelItem => nombreMes )
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Año)

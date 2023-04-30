@@ -26,6 +26,17 @@
     </div>
 </div>
 
+<div class="col-sm-6">
+    <div class="card">
+        <div class="card-header">
+            Informe por categoria ultimos 30 dias
+        </div>
+        <div class="card-body">
+            <canvas id="chartCategorias" style="max-height:250px"></canvas>
+        </div>
+    </div>
+</div>
+
 @section Scripts{ 
     
     <script>
@@ -103,9 +114,82 @@
                 })
         }
 
+        ////GASTOS INFORME
+        //function resumenCategorias() {
+        //    fetch("Dashboard/InformeGategoria")
+        //        .then((response) => {
+        //            return response.ok ? response.json() : Promise.reject(response);
+        //        })
+        //        .then((dataJson) => {
+
+        //            const labels = dataJson.map((item) => { return item.categoria })
+
+        //            //FILTRAMOS POR INGRESO Y EGRESOS
+        //            const dataJsonIngresos = dataJson.filter(item => item.tipo == "Ingreso");
+        //            const dataJsonEgresos = dataJson.filter(item => item.tipo == "Egreso");
+
+        //            //ASIGNAR ITEMS
+        //            const labelsIngresos = dataJsonIngresos.map((item) => { return item.categoria })
+        //            const valuesIngresos = dataJsonIngresos.map((item) => { return item.saldo })
+
+        //            const labelsEgresos = dataJsonEgresos.map((item) => { return item.categoria })
+        //            const valuesEgresos = dataJsonEgresos.map((item) => { return item.saldo })
+
+        //            console.log(labelsIngresos);
+        //            console.log(valuesIngresos);
+        //            console.log(labelsEgresos);
+
+
+        //            const data = {
+        //                labels: labels,
+        //                datasets: [
+        //                    {
+        //                        label: 'Gastos',
+        //                        data: valuesEgresos,
+        //                        borderWidth: 2,
+        //                        borderRadius: Number.MAX_VALUE,
+        //                        borderSkipped: false,
+        //                    },
+        //                    {
+        //                        label: 'Ingresos',
+        //                        data: valuesIngresos,
+        //                        borderWidth: 2,
+        //                        borderRadius: 5,
+        //                        borderSkipped: false,
+        //                    }
+        //                ]
+        //            };
+                    
+        //            const config = {
+        //                type: 'bar',
+        //                data: data,
+        //                options: {
+        //                    responsive: true,
+        //                    plugins: {
+        //                        legend: {
+        //                            position: 'top',
+        //                        },
+        //                        title: {
+        //                            display: true,
+        //                            text: 'Chart.js Bar Chart'
+        //                        }
+        //                    }
+        //                },
+        //            };
+
+        //            const canvasBar = document.getElementById("chartCategorias");
+
+        //            const graficoLinea = new Chart(canvasBar, config);
+
+        //        }).catch((error) => {
+        //            console.log(error)
+        //        })
+        //}
+
         $(document).ready(()=>{
             resumenIngresos();
             resumenEgresos();
+            resumenCategorias();
 
         })
 

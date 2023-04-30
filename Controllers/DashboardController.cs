@@ -37,7 +37,7 @@ namespace GastosPersonales.Controllers
         public IActionResult InformeGastosFecha()
         {
             DateTime FechaInicio = DateTime.Now;
-            FechaInicio = FechaInicio.AddDays(-5);
+            FechaInicio = FechaInicio.AddDays(-30);
 
             List<VMComprobante> Lista = (from comprobante in _context.Comprobante
                                          where (comprobante.Fecha.Date >= FechaInicio.Date && comprobante.Tipo == "Egreso")
@@ -47,6 +47,24 @@ namespace GastosPersonales.Controllers
                                              fecha = grupo.Key.ToString("dd/MM/yyyy"),
                                              saldo = grupo.Sum(c => c.Costo),
 
+                                         }).ToList();
+
+            return StatusCode(StatusCodes.Status200OK, Lista);
+        }
+
+        public IActionResult InformeGategoria()
+        {
+            DateTime FechaInicio = DateTime.Now;
+            FechaInicio = FechaInicio.AddDays(-30);
+
+            List<VMComprobante> Lista = (from comprobante in _context.Comprobante
+                                         where (comprobante.Fecha.Date >= FechaInicio.Date)
+                                         group comprobante by comprobante.Categoria.Nombre into grupo
+                                         select new VMComprobante
+                                         {
+                                             categoria = grupo.Key.ToString(),
+                                             saldo = grupo.Sum(c => c.Costo),
+                                             tipo = grupo.FirstOrDefault().Categoria.TipoCategoria, //Guardamos el tipo de la categoria
                                          }).ToList();
 
             return StatusCode(StatusCodes.Status200OK, Lista);

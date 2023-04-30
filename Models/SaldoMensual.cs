@@ -11,6 +11,6 @@ namespace GastosPersonales.Models
         public int Año { get; set; }
         public string UserId { get; set; }
 
-        public IdentityUser User { get; set; }
+        public IdentityUser? User { get; set; }
     }
 }

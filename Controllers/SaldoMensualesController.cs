@@ -24,8 +24,14 @@ namespace GastosPersonales.Controllers
 
         // GET: SaldoMensuales
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar)
         {
+            var usuarios = from usuario in _context.Users select usuario;
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                usuarios = usuarios.Where(s => s.UserName!.Contains(buscar));
+            }
+            
             //Trae el usuario que inicio sesion
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 

@@ -26,16 +26,29 @@
     </div>
 </div>
 
-<div class="col-sm-6">
-    <div class="card">
-        <div class="card-header">
-            Informe por categoria ultimos 30 dias
+<div class="row mt-0-2">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Ingresos por categoria ultimos 30 dias
+            </div>
+            <div class="card-body">
+                <canvas id="chartCategoriasIngreso" style="max-height:250px"></canvas>
+            </div>
         </div>
-        <div class="card-body">
-            <canvas id="chartCategorias" style="max-height:250px"></canvas>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Gastos por categoria ultimos 30 dias
+            </div>
+            <div class="card-body">
+                <canvas id="chartCategoriasGastos" style="max-height:250px"></canvas>
+            </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts{ 
     
@@ -114,83 +127,116 @@
                 })
         }
 
-        ////GASTOS INFORME
-        //function resumenCategorias() {
-        //    fetch("Dashboard/InformeGategoria")
-        //        .then((response) => {
-        //            return response.ok ? response.json() : Promise.reject(response);
-        //        })
-        //        .then((dataJson) => {
+        //INGRESOS POR CATEGORIA INFORME
+        function resumenCategoriasIngresos() {
+            fetch("Dashboard/InformeGategoria")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
 
-        //            const labels = dataJson.map((item) => { return item.categoria })
+                    //FILTRAMOS POR INGRESO
+                    const dataJsonIngresos = dataJson.filter(item => item.tipo == "Ingreso");
 
-        //            //FILTRAMOS POR INGRESO Y EGRESOS
-        //            const dataJsonIngresos = dataJson.filter(item => item.tipo == "Ingreso");
-        //            const dataJsonEgresos = dataJson.filter(item => item.tipo == "Egreso");
-
-        //            //ASIGNAR ITEMS
-        //            const labelsIngresos = dataJsonIngresos.map((item) => { return item.categoria })
-        //            const valuesIngresos = dataJsonIngresos.map((item) => { return item.saldo })
-
-        //            const labelsEgresos = dataJsonEgresos.map((item) => { return item.categoria })
-        //            const valuesEgresos = dataJsonEgresos.map((item) => { return item.saldo })
-
-        //            console.log(labelsIngresos);
-        //            console.log(valuesIngresos);
-        //            console.log(labelsEgresos);
+                    //ASIGNAR ITEMS
+                    const labelsIngresos = dataJsonIngresos.map((item) => { return item.categoria })
+                    const valuesIngresos = dataJsonIngresos.map((item) => { return item.saldo })
 
 
-        //            const data = {
-        //                labels: labels,
-        //                datasets: [
-        //                    {
-        //                        label: 'Gastos',
-        //                        data: valuesEgresos,
-        //                        borderWidth: 2,
-        //                        borderRadius: Number.MAX_VALUE,
-        //                        borderSkipped: false,
-        //                    },
-        //                    {
-        //                        label: 'Ingresos',
-        //                        data: valuesIngresos,
-        //                        borderWidth: 2,
-        //                        borderRadius: 5,
-        //                        borderSkipped: false,
-        //                    }
-        //                ]
-        //            };
-                    
-        //            const config = {
-        //                type: 'bar',
-        //                data: data,
-        //                options: {
-        //                    responsive: true,
-        //                    plugins: {
-        //                        legend: {
-        //                            position: 'top',
-        //                        },
-        //                        title: {
-        //                            display: true,
-        //                            text: 'Chart.js Bar Chart'
-        //                        }
-        //                    }
-        //                },
-        //            };
 
-        //            const canvasBar = document.getElementById("chartCategorias");
+                    const data = {
+                        labels: labelsIngresos,
+                        datasets: [{
+                            label: 'Ingresos',
+                            data: valuesIngresos,
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgb(54, 162, 235)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
 
-        //            const graficoLinea = new Chart(canvasBar, config);
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },
+                    };
 
-        //        }).catch((error) => {
-        //            console.log(error)
-        //        })
-        //}
+                    const canvasBarIngreso = document.getElementById("chartCategoriasIngreso");
+
+                    const graficoLinea = new Chart(canvasBarIngreso, config);
+
+                }).catch((error) => {
+                    console.log(error)
+                })
+        }
+
+        //GASTOS POR CATEGORIA INFORME
+        function resumenCategoriasEgresos() {
+            fetch("Dashboard/InformeGategoria")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+                    //FILTRAMOS POREGRESOS
+                    const dataJsonEgresos = dataJson.filter(item => item.tipo == "Egreso");
+
+                    //ASIGNAR ITEMS
+
+                    const labelsEgresos = dataJsonEgresos.map((item) => { return item.categoria })
+                    const valuesEgresos = dataJsonEgresos.map((item) => { return item.saldo })
+
+                    const data = {
+                        labels: labelsEgresos,
+                        datasets: [{
+                            label: 'Gastos',
+                            data: valuesEgresos,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },
+                    };
+
+                    const canvasBarEgreso = document.getElementById("chartCategoriasGastos");
+
+                    const graficoLinea = new Chart(canvasBarEgreso, config);
+
+                }).catch((error) => {
+                    console.log(error)
+                })
+        }
 
         $(document).ready(()=>{
             resumenIngresos();
             resumenEgresos();
-            //resumenCategorias();
-
+            resumenCategoriasIngresos();
+            resumenCategoriasEgresos();
         })
 
     </script>

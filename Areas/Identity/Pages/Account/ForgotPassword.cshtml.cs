@@ -72,8 +72,8 @@ namespace GastosPersonales.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Recuperar contraseña",
+                    $"Por favor restaura tu contraseña <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Click aqui</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

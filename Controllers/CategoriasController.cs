@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GastosPersonales.Data;
 using GastosPersonales.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace GastosPersonales.Controllers
 {
@@ -24,7 +25,7 @@ namespace GastosPersonales.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-              return _context.Categoria != null ? 
+            return _context.Categoria != null ? 
                           View(await _context.Categoria.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Categoria'  is null.");
         }

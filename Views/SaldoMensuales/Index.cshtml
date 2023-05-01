@@ -9,12 +9,27 @@
 <p>
     <a asp-action="Create">Crear nuevo</a>
 </p>
-<form asp-controller="Usuarios" asp-action="Index">
+@using (Html.BeginForm("SearchByYear", "SaldoMensuales", FormMethod.Get))
+{
+    <div class="form-group row">
+        <label for="year" class="col-sm-2 col-form-label">Buscar:</label>
+        <div class="col-sm-4">
+            <input type="number" id="year" name="year" class="form-control" min="1900" max="@DateTime.Today.Year" required>
+        </div>
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-sn btn-dark">Buscar</button>
+        </div>
+    </div>
+}
+
+
+@*<form asp-controller="Usuarios" asp-action="Index">
     <p>
         Buscar: <input type="text" name="Buscar" class="form-text" />
         <input type="submit" value="Buscar" class="btn btn-sn btn-dark" />
     </p>
-</form>
+</form>*@
+
 
 <table class="table">
     <thead>

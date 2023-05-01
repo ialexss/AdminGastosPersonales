@@ -10,28 +10,38 @@ using GastosPersonales.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using SendGrid.Helpers.Mail;
 
 namespace GastosPersonales.Controllers
 {
     public class SaldoMensualesController : Controller
     {
-        private readonly ApplicationDbContext _context;       
+        private readonly ApplicationDbContext _context;
         public SaldoMensualesController(ApplicationDbContext context)
         {
-            _context = context;        
+            _context = context;
 
+        }
+
+        // GET: SaldoMensuales/SearchByYear
+        public async Task<IActionResult> SearchByYear(int? year)
+        {
+            if (!year.HasValue || year < 1900 || year > DateTime.Today.Year)
+            {
+                return NotFound();
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationDbContext = _context.SaldoMensual.Include(s => s.User)
+                .Where(c => c.UserId == userId && c.Año == year);
+
+            return View("Index", await applicationDbContext.ToListAsync());
         }
 
         // GET: SaldoMensuales
         [Authorize]
-        public async Task<IActionResult> Index(string buscar)
+        public async Task<IActionResult> Index()
         {
-            var usuarios = from usuario in _context.Users select usuario;
-            if (!string.IsNullOrEmpty(buscar))
-            {
-                usuarios = usuarios.Where(s => s.UserName!.Contains(buscar));
-            }
-            
             //Trae el usuario que inicio sesion
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -168,14 +178,14 @@ namespace GastosPersonales.Controllers
             {
                 _context.SaldoMensual.Remove(saldoMensual);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SaldoMensualExists(int id)
         {
-          return (_context.SaldoMensual?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.SaldoMensual?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

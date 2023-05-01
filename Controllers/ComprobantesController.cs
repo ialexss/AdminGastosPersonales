@@ -22,10 +22,29 @@ namespace GastosPersonales.Controllers
 
         // GET: Comprobantes
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, string filtroActual, int? numpag)
         {
+            var comprobantes = from Comprobante in _context.Comprobante select Comprobante;
+            if (buscar != null)
+                numpag = 1;
+            else
+                buscar = filtroActual;
+
+            if (!String.IsNullOrEmpty(buscar))
+            {
+                comprobantes = comprobantes.Where(s => s.Tipo!.Contains(buscar));
+            }
+
+            ViewData["FiltroActual"] = buscar;
+
+            int cantidadregistros = 8;
+
             var applicationDbContext = _context.Comprobante.Include(c => c.Categoria).Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
+
+            return View(await Paginacion<Comprobante>.CrearPaginacion(comprobantes.AsNoTracking(), numpag ?? 1, cantidadregistros));
+
+            
+            //return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Comprobantes/Details/5

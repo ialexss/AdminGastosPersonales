@@ -4,61 +4,68 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Comprobante</h4>
+<h4 class="text-center">Crear Transaccion</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Detalle" class="control-label"></label>
-                <input asp-for="Detalle" class="form-control" />
-                <span asp-validation-for="Detalle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fecha" class="control-label"></label>
-                <input asp-for="Fecha" class="form-control" />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Costo" class="control-label"></label>
-                <input asp-for="Costo" class="form-control" />
-                <span asp-validation-for="Costo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tipo" class="control-label"></label>
-                <input asp-for="Tipo" class="form-control" />
-                <span asp-validation-for="Tipo" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Imagen" class="control-label"></label>
-                <input asp-for="Imagen" class="form-control" />
-                <span asp-validation-for="Imagen" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoriaId" class="control-label"></label>
-                <select asp-for="CategoriaId" class ="form-control" asp-items="ViewBag.CategoriaId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="">
+        <div class="col-md-4 shadow m-auto card card-body card-move">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mt-2">
+                    <label asp-for="Detalle" class="control-label"></label>
+                   @* <input asp-for="Detalle" class="form-control" />*@
+                    <textarea asp-for="Detalle" cols="40" rows="3" class="form-control" placeholder="ingresa el detalle de tu transaccion" >
+
+                    </textarea>
+                    <span asp-validation-for="Detalle" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="Fecha" class="control-label"></label>
+                    <input asp-for="Fecha" class="form-control" />
+                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="Costo" class="control-label">Monto</label>
+                    <input asp-for="Costo" type="number" step="0.01" placeholder="75,50" class="form-control" />
+                    <span asp-validation-for="Costo" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2 ">
+                    <label asp-for="Tipo" class="control-label"></label>
+                   @* <input asp-for="Tipo" class="form-control" />*@
+                    <select asp-for="Tipo" class="form-select">
+                        <option value="ingreso" >Ingreso</option>
+                        <option value="gasto">Gasto</option>
+                    </select>
+                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
+                    </label>
+                </div>
+                @*<div class="form-group mt-2">
+                    <label asp-for="Imagen" class="control-label"></label>
+                    <input asp-for="Imagen" class="form-control" />
+                    <span asp-validation-for="Imagen" class="text-danger"></span>
+                </div>*@
+                <div class="form-group mt-2">
+                    <label asp-for="UserId" class="control-label">Usuario</label>
+                    <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="CategoriaId" class="control-label">Categorias</label>
+                    <select asp-for="CategoriaId" class="form-select"  asp-items="ViewBag.CategoriaId"></select>
+                </div>
+                <div class="form-group mt-5">
+                    <input type="submit" value="Crear transaccion" class="btn btn-primary form-control" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-secondary" asp-action="Index">Volver atras</a>
 </div>
 
 @section Scripts {

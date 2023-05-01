@@ -1,41 +1,53 @@
-﻿@model IEnumerable<GastosPersonales.Models.Comprobante>
+﻿@using GastosPersonales.Data;
+@*@model IEnumerable<GastosPersonales.Models.Comprobante>*@
+@model Paginacion<Comprobante>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2 class="text-center">Lista de transacciones</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Create">Crear nueva transacion</a>
 </p>
-<table class="table">
-    <thead>
+<hr />
+
+<form asp-controller="Comprobantes" asp-action="Index">
+    <p>
+        Buscar: <input type="text" name="buscar" value="@ViewData["FiltroActual"]" placeholder="buscar por tipo de transaccion" class="form-text" />
+        <input type="submit" value="Buscar" class="btn btn-sm btn-dark" />
+        <a asp-action="Index"  class="btn btn-outline-info">Lista completa</a>
+    </p>
+</form>
+
+<table class="table table-hover shadow">
+    <thead class="table table-success">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Detalle)
+                Detalle
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fecha)
+                Fecha
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Costo)
+                Monto
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tipo)
+                Tipo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Activo)
+                Activo
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Imagen)
-            </th>
+            </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.Categoria)
+                Categoria
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.User)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -57,21 +69,44 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Activo)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Imagen)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Categoria.Nombre)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
+            </td>*@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a class="btn btn-danger" asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a class="btn btn-warning" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@{
+    var anteriordeshabilitado = !Model.PaginasAnteriores ? "disabled" : "";
+    var siguientedeshabilitado = !Model.PaginasPosteriores ? "disabled" : "";
+}
+
+<div>
+    <a asp-action="Index" asp-route-ordenActual="@ViewData["OrdenActual"]"
+       asp-route-numpag="@(Model.PaginaInicio - 1)" asp-route-filtroActual="@ViewData["FiltroActual"]"
+       class="btn btn-primary @anteriordeshabilitado">Anterior</a>
+
+    @for (var i = 1; i <= Model.PaginasTotales; i++)
+    {
+        var paginaactiva = (i == Model.PaginaInicio) ? "active" : "";
+        <a asp-action="Index" asp-route-ordenActual="@ViewData["OrdenActual"]" asp-route-numpag="@i"
+             asp-route-filtroActual="@ViewData["FiltroActual"]" class="btn btn-primary @paginaactiva">
+            @i
+        </a>
+    }
+
+    <a asp-action="Index" asp-route-ordenActual="@ViewData["OrdenActual"]"
+       asp-route-numpag="@(Model.PaginaInicio + 1)" asp-route-filtroActual="@ViewData["FiltroActual"]"
+       class="btn btn-primary @siguientedeshabilitado">Siguiente</a>

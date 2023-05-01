@@ -7,19 +7,27 @@ namespace GastosPersonales.Controllers
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public int Dias { get; set; } = 30;
         public DashboardController(ApplicationDbContext context)
         {
             _context = context;
         }
         public IActionResult Index()
         {
+            //Saldo Actual
+            decimal sumaIngresos = _context.Comprobante.Where(c => c.Tipo == "Ingreso").Sum(c => c.Costo);
+            decimal sumaGastos = _context.Comprobante.Where(c => c.Tipo == "Egreso").Sum(c => c.Costo);
+            decimal resultado = sumaIngresos - sumaGastos;
+
+            ViewBag.Resultado = resultado;
+
             return View();
         }
 
         public IActionResult InformeIngresosFecha()
         {
             DateTime FechaInicio = DateTime.Now;
-            FechaInicio = FechaInicio.AddDays(-30);
+            FechaInicio = FechaInicio.AddDays(- Dias);
 
             List<VMComprobante> Lista = (from comprobante in _context.Comprobante
                                                                where (comprobante.Fecha.Date >= FechaInicio.Date && comprobante.Tipo == "Ingreso")
@@ -37,7 +45,7 @@ namespace GastosPersonales.Controllers
         public IActionResult InformeGastosFecha()
         {
             DateTime FechaInicio = DateTime.Now;
-            FechaInicio = FechaInicio.AddDays(-30);
+            FechaInicio = FechaInicio.AddDays(- Dias);
 
             List<VMComprobante> Lista = (from comprobante in _context.Comprobante
                                          where (comprobante.Fecha.Date >= FechaInicio.Date && comprobante.Tipo == "Egreso")
@@ -55,7 +63,7 @@ namespace GastosPersonales.Controllers
         public IActionResult InformeGategoria()
         {
             DateTime FechaInicio = DateTime.Now;
-            FechaInicio = FechaInicio.AddDays(-30);
+            FechaInicio = FechaInicio.AddDays(- Dias);
 
             List<VMComprobante> Lista = (from comprobante in _context.Comprobante
                                          where (comprobante.Fecha.Date >= FechaInicio.Date)
@@ -68,6 +76,17 @@ namespace GastosPersonales.Controllers
                                          }).ToList();
 
             return StatusCode(StatusCodes.Status200OK, Lista);
+        }
+
+        public IActionResult InformeSaldoMensual()
+        {
+            decimal sumaIngresos = _context.Comprobante.Where(c => c.Tipo == "Ingreso").Sum(c => c.Costo);
+            decimal sumaGastos = _context.Comprobante.Where(c => c.Tipo == "Egreso").Sum(c => c.Costo);
+            decimal resultado = sumaIngresos - sumaGastos;
+
+            ViewBag.Resultado = resultado;
+
+            return View();
         }
     }
 }

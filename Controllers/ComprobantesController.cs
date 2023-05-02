@@ -102,6 +102,8 @@ namespace GastosPersonales.Controllers
         // GET: Comprobantes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // obtener el ID del usuario autenticado
+
             if (id == null || _context.Comprobante == null)
             {
                 return NotFound();
@@ -113,7 +115,7 @@ namespace GastosPersonales.Controllers
                 return NotFound();
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre", comprobante.CategoriaId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comprobante.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userId);
             return View(comprobante);
         }
 
@@ -124,6 +126,9 @@ namespace GastosPersonales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Detalle,Fecha,Costo,Tipo,Activo,Imagen,UserId,CategoriaId")] Comprobante comprobante)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // obtener el ID del usuario autenticado
+            comprobante.UserId = userId;
+
             if (id != comprobante.Id)
             {
                 return NotFound();

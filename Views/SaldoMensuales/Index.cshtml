@@ -4,17 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Listas Mensuales</h1>
+<h1 class="text-center display-6">Saldos Mensuales</h1>
 
 <p>
-    <a asp-action="Create">Crear nuevo</a>
+    <a asp-action="Create" class="btn btn-danger">Cerrar mes</a>
 </p>
 @using (Html.BeginForm("SearchByYear", "SaldoMensuales", FormMethod.Get))
 {
     <div class="form-group row">
-        <label for="year" class="col-sm-2 col-form-label">Buscar:</label>
+        <label for="year" class="col-sm-2 col-form-label">Buscar por año:</label>
         <div class="col-sm-4">
-            <input type="number" id="year" name="year" class="form-control" min="1900" max="@DateTime.Today.Year" required>
+            <input type="number" id="year" name="year" class="form-control" min="1900" max="@DateTime.Today.Year" required placeholder="2023">
         </div>
         <div class="col-sm-6">
             <button type="submit" class="btn btn-sn btn-dark">Buscar</button>
@@ -30,8 +30,9 @@
     </p>
 </form>*@
 
+<br />
 
-<table class="table">
+<table class="table table-hover shadow">
     <thead>
         <tr>
             <th>
@@ -62,9 +63,9 @@
                 @Html.DisplayFor(modelItem => item.Año)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-dark btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalle</a> 
+@*                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>*@
             </td>
         </tr>
 }

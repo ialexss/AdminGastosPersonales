@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<GastosPersonales.Models.SaldoMensual>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Total Mensual";
 }
 
 <h1 class="text-center display-6">Saldos Mensuales</h1>
@@ -54,7 +54,7 @@
 
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Total)
+                @Html.DisplayFor(modelItem => item.Total) Bs.
             </td>
             <td>
                     @Html.DisplayFor(modelItem => nombreMes )

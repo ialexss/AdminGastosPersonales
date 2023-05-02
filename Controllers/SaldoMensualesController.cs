@@ -71,6 +71,13 @@ namespace GastosPersonales.Controllers
         // GET: SaldoMensuales/Create
         public IActionResult Create()
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //Saldo Actual
+            decimal sumaIngresos = _context.Comprobante.Where(c => c.Tipo == "Ingreso" && c.UserId == userId).Sum(c => c.Costo);
+            decimal sumaGastos = _context.Comprobante.Where(c => c.Tipo == "Egreso" && c.UserId == userId).Sum(c => c.Costo);
+            decimal saldoactual = sumaIngresos - sumaGastos;
+
+            ViewData["TotalActual"] = saldoactual.ToString(); // Mandamos el total actual a la vista
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -82,13 +89,23 @@ namespace GastosPersonales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Total,Mes,Año,UserId")] SaldoMensual saldoMensual)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            saldoMensual.UserId = userId;
             if (ModelState.IsValid)
             {
                 _context.Add(saldoMensual);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            //Saldo Actual
+            decimal sumaIngresos = _context.Comprobante.Where(c => c.Tipo == "Ingreso" && c.UserId == userId).Sum(c => c.Costo);
+            decimal sumaGastos = _context.Comprobante.Where(c => c.Tipo == "Egreso" && c.UserId == userId).Sum(c => c.Costo);
+            decimal saldoactual = sumaIngresos - sumaGastos;
+
+            ViewData["TotalActual"] = saldoactual.ToString(); // Mandamos el total actual a la vista
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", saldoMensual.UserId);
+            //si no es valido
             return View(saldoMensual);
         }
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1 class="text-center">Crear categoria</h1>
+<h1 class="text-center display-6">Agregar categoria</h1>
 
 
 <hr />
@@ -15,7 +15,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Nombre" class="control-label"></label>
-                    <input asp-for="Nombre" placeholder="ingrese el nombre de la categoria" class="form-control" />
+                    <input asp-for="Nombre" placeholder="Ingrese el nombre de la categoria" class="form-control" />
                     <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
                 <div class="form-group mt-2">
@@ -28,7 +28,7 @@
                     <span asp-validation-for="TipoCategoria" class="text-danger"></span>
                 </div>
                 <div class="form-group mt-4">
-                    <input type="submit" value="Crear nueva categoria" class="btn btn-primary form-control " />
+                    <input type="submit" value="Agregar nueva categoria" class="btn btn-primary form-control " />
                 </div>
             </form>
         </div>
@@ -36,7 +36,7 @@
 </div>
 
 <div class="mt-5">
-    <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+    <a class="btn btn-secondary" asp-action="Index">Atras</a>
 </div>
 
 @section Scripts {

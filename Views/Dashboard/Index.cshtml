@@ -3,9 +3,15 @@
     ViewData["Title"] = "Informes";
 }
 
-<h2 class=" display-6"> 💰 Saldo Actual: @ViewBag.Resultado Bs.</h2>
+<div class="row align-items-center">
+    <div class="col-sm-8">
+        <h2 class=" display-6"> 💰 Saldo Actual: @ViewBag.Resultado Bs.</h2>
+    </div>
+    <div class="col-4 text-center">
+        <a asp-controller="Comprobantes" asp-action="Create" class="btn btn-outline-primary">+ Nueva transacción</a>
+    </div>
+</div>
 <br />
-
 <div class="row mt-0-2" >
     <div class="col-sm-6">
         <div class="card">

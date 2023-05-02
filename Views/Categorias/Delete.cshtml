@@ -10,6 +10,7 @@
     Estas seguro que quieres eliminar esta categoria?
 </h3>
 <div>
+    <hr />
     <h4>Categoria</h4>
     <hr />
     <dl class="row">
@@ -29,7 +30,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a class="btn btn-secondary" asp-action="Index">Volver a la lista</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+        <a class="btn btn-secondary" asp-action="Index">Atras</a>
     </form>
 </div>

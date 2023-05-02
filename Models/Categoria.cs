@@ -6,6 +6,7 @@ namespace GastosPersonales.Models
     {
         public int Id { get; set; }
         [Required]
+        [StringLength(35)]
         public string? Nombre { get; set; }
         [Required]
         public string? TipoCategoria { get; set;}

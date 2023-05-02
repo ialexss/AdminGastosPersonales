@@ -36,12 +36,12 @@
                 <label asp-for="Tipo" class="control-label"></label>
                 @* <input asp-for="Tipo" class="form-control" />*@
                 <select asp-for="Tipo" class="form-select">
-                    <option value="ingreso">Ingreso</option>
-                    <option value="gasto">Gasto</option>
+                    <option value="Ingreso">Ingreso</option>
+                    <option value="Egreso">Gasto</option>
                 </select>
                 <span asp-validation-for="Tipo" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check" style="display:none">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
                 </label>

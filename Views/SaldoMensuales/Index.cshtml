@@ -12,11 +12,11 @@
 @using (Html.BeginForm("SearchByYear", "SaldoMensuales", FormMethod.Get))
 {
     <div class="form-group row">
-        <label for="year" class="col-sm-2 col-form-label">Buscar por año:</label>
-        <div class="col-sm-4">
+        <label for="year" class="col-auto col-form-label">Buscar por año:</label>
+        <div class="col-sm-3">
             <input type="number" id="year" name="year" class="form-control" min="1900" max="@DateTime.Today.Year" required placeholder="2023">
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-2">
             <button type="submit" class="btn btn-sn btn-dark">Buscar</button>
         </div>
     </div>

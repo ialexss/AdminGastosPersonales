@@ -4,14 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="text-center">Categorias</h1>
+<h1 class="text-center display-6">📚 Categorias</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Crear nueva categoria</a>
+    <a asp-action="Create" class="btn btn-success">Agregar nueva categoria</a>
 </p>
 <hr />
 <table class="table shadow-lg table-hover">
-    <thead class="table table-primary">
+    <thead class="table table-secondary">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
@@ -19,7 +19,9 @@
             <th>
                 Tipo de categoria
             </th>
-            <th></th>
+            <th>
+                Acciones
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -32,9 +34,9 @@
                 @Html.DisplayFor(modelItem => item.TipoCategoria)
             </td>
             <td>
-                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a class="btn btn-danger" asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a class="btn btn-warning" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <a class="btn btn-dark btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalle</a> |
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

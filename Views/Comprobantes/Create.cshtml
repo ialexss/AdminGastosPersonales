@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h4 class="text-center">Crear Transaccion</h4>
+<h4 class="text-center">Agregar Transacción</h4>
 <hr />
 <div class="row">
     <div class="">
@@ -14,7 +14,7 @@
                 <div class="form-group mt-2">
                     <label asp-for="Detalle" class="control-label"></label>
                    @* <input asp-for="Detalle" class="form-control" />*@
-                    <textarea asp-for="Detalle" cols="40" rows="3" class="form-control" placeholder="ingresa el detalle de tu transaccion" >
+                    <textarea asp-for="Detalle" cols="40" rows="3" class="form-control" placeholder="Ingresa el detalle de tu transacción" >
 
                     </textarea>
                     <span asp-validation-for="Detalle" class="text-danger"></span>
@@ -33,14 +33,14 @@
                     <label asp-for="Tipo" class="control-label"></label>
                    @* <input asp-for="Tipo" class="form-control" />*@
                     <select asp-for="Tipo" class="form-select">
-                        <option value="ingreso" >Ingreso</option>
-                        <option value="gasto">Gasto</option>
+                        <option value="Ingreso" >Ingreso</option>
+                        <option value="Egreso">Gasto</option>
                     </select>
                     <span asp-validation-for="Tipo" class="text-danger"></span>
                 </div>
-                <div class="form-group form-check">
+                <div class="form-group form-check" style="display:none">
                     <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)
+                        <input class="form-check-input" asp-for="Activo" value="true" checked /> @Html.DisplayNameFor(model => model.Activo)
                     </label>
                 </div>
                 @*<div class="form-group mt-2">
@@ -48,7 +48,7 @@
                     <input asp-for="Imagen" class="form-control" />
                     <span asp-validation-for="Imagen" class="text-danger"></span>
                 </div>*@
-                <div class="form-group mt-2">
+                <div class="form-group mt-2" style="display:none">
                     <label asp-for="UserId" class="control-label">Usuario</label>
                     <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
                 </div>
@@ -57,7 +57,7 @@
                     <select asp-for="CategoriaId" class="form-select"  asp-items="ViewBag.CategoriaId"></select>
                 </div>
                 <div class="form-group mt-5">
-                    <input type="submit" value="Crear transaccion" class="btn btn-primary form-control" />
+                    <input type="submit" value="Agregar transacción" class="btn btn-primary form-control" />
                 </div>
             </form>
         </div>

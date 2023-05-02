@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using GastosPersonales.Data;
 using GastosPersonales.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using GastosPersonales.Models.ViewModels;
 
 namespace GastosPersonales.Controllers
 {
@@ -24,7 +26,10 @@ namespace GastosPersonales.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string buscar, string filtroActual, int? numpag)
         {
-            var comprobantes = from Comprobante in _context.Comprobante select Comprobante;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // obtener el ID del usuario autenticado
+
+            var comprobantes = from Comprobante in _context.Comprobante.Include(c => c.Categoria).Where(c => c.UserId == userId) select Comprobante;
+
             if (buscar != null)
                 numpag = 1;
             else
@@ -39,11 +44,9 @@ namespace GastosPersonales.Controllers
 
             int cantidadregistros = 8;
 
-            var applicationDbContext = _context.Comprobante.Include(c => c.Categoria).Include(c => c.User);
-
             return View(await Paginacion<Comprobante>.CrearPaginacion(comprobantes.AsNoTracking(), numpag ?? 1, cantidadregistros));
 
-            
+            //var applicationDbContext = _context.Comprobante.Include(c => c.Categoria).Include(c => c.User);
             //return View(await applicationDbContext.ToListAsync());
         }
 
@@ -82,8 +85,11 @@ namespace GastosPersonales.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Detalle,Fecha,Costo,Tipo,Activo,Imagen,UserId,CategoriaId")] Comprobante comprobante)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // obtener el ID del usuario autenticado
+
             if (ModelState.IsValid)
             {
+                comprobante.UserId = userId;
                 _context.Add(comprobante);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

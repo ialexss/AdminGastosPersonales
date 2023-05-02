@@ -1,28 +1,38 @@
 ﻿@using GastosPersonales.Data;
 @*@model IEnumerable<GastosPersonales.Models.Comprobante>*@
-@model Paginacion<Comprobante>
+@model Paginacion<GastosPersonales.Models.Comprobante>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Transacciones";
 }
 
-<h2 class="text-center">Lista de transacciones</h2>
+<h2 class="text-center display-6"> 📄Transacciones</h2>
 
 <p>
-    <a class="btn btn-success" asp-action="Create">Crear nueva transacion</a>
+    <a class="btn btn-success" asp-action="Create"> Agregar nueva transacción</a>
 </p>
 <hr />
-
-<form asp-controller="Comprobantes" asp-action="Index">
-    <p>
-        Buscar: <input type="text" name="buscar" value="@ViewData["FiltroActual"]" placeholder="buscar por tipo de transaccion" class="form-text" />
-        <input type="submit" value="Buscar" class="btn btn-sm btn-dark" />
-        <a asp-action="Index"  class="btn btn-outline-info">Lista completa</a>
-    </p>
-</form>
+    <form method="post" action="@Url.Action("Index")" >
+    <div class="form-group row g-3 align-items-center">
+            <div class="col-auto">
+                <label for="filtro">Filtro:</label>
+            </div>
+        <div class="col-sm-3">
+                <select id="filtro" name="buscar" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="Ingreso">Ingresos</option>
+                    <option value="Egreso">Egresos</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
+        </div>               
+    </form>
+<br />
 
 <table class="table table-hover shadow">
-    <thead class="table table-success">
+    <thead class="table table-secondary">
         <tr>
             <th>
                 Detalle
@@ -36,9 +46,9 @@
             <th>
                 Tipo
             </th>
-            <th>
+@*            <th>
                 Activo
-            </th>
+            </th>*@
             @*<th>
                 @Html.DisplayNameFor(model => model.Imagen)
             </th>*@
@@ -48,7 +58,9 @@
             @*<th>
                 @Html.DisplayNameFor(model => model.User)
             </th>*@
-            <th></th>
+            <th>
+                Acciones
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -66,9 +78,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Tipo)
             </td>
-            <td>
+@*            <td>
                 @Html.DisplayFor(modelItem => item.Activo)
-            </td>
+            </td>*@
             @*<td>
                 @Html.DisplayFor(modelItem => item.Imagen)
             </td>*@
@@ -79,9 +91,9 @@
                 @Html.DisplayFor(modelItem => item.User.Id)
             </td>*@
             <td>
-                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a class="btn btn-danger" asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a class="btn btn-warning" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                <a class="btn btn-dark btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalle</a> |
+                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

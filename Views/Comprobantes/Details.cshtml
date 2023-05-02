@@ -1,17 +1,18 @@
 ﻿@model GastosPersonales.Models.Comprobante
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalle";
 }
 
-<h1 class="text-center">Detalles de transaccion</h1>
-
-<div>
-    <h4>Comprobante</h4>
-    <hr />
+<p class="text-center display-6">  Detalle de transacción </p>
+<hr />
+<br />
+<div style="min-height:500px">
     <dl class="row">
         <div>
-            <div class="col-md-5 shadow-lg card-body m-auto" >
+            <div class="col-md-5 shadow-lg card-body m-auto" style="min-height:400px" >
+                <h4 class="text-center">Comprobante</h4>
+                <hr />
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Detalle)
                 </dt>
@@ -36,12 +37,12 @@
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.Tipo)
                 </dd>
-                <dt class="col-sm-2">
+@*                <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Activo)
-                </dt>
-                <dd class="col-sm-10">
+                </dt>*@
+@*                <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.Activo)
-                </dd>
+                </dd>*@
                 @*<dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Imagen)
                 </dt>
@@ -54,17 +55,18 @@
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.Categoria.Nombre)
                 </dd>
-                <dt class="col-sm-2">
+@*                <dt class="col-sm-2">
                     Usuario
                 </dt>
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.User.Id)
-                </dd>
+                </dd>*@
             </div>
         </div>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" class="btn btn-danger" asp-route-id="@Model?.Id">Editar</a> |
-    <a class="btn btn-secondary" asp-action="Index">Volver atras</a>
+<br />
+<div class="">
+    <a asp-action="Edit" class="btn btn-dark" asp-route-id="@Model?.Id">Editar</a> 
+    <a class="btn btn-secondary" asp-action="Index">Atras</a>
 </div>

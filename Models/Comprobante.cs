@@ -16,8 +16,8 @@ namespace GastosPersonales.Models
         public string Tipo { get; set;}
         public bool Activo { get; set; }
         public byte[]? Imagen { get; set;}
-        public string UserId { get; set; }
         public int CategoriaId { get; set; }
+        public string UserId { get; set; }
         public Categoria? Categoria { get; set; }
         public IdentityUser? User { get; set; }
 

@@ -24,7 +24,7 @@ namespace GastosPersonales.Controllers
 
         // GET: Comprobantes
         [Authorize]
-        public async Task<IActionResult> Index(string buscar, string filtroActual, int? numpag)
+        public async Task<IActionResult> Index(string buscar, string filtroActual, int? numpag, string ordenActual)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // obtener el ID del usuario autenticado
 
@@ -41,6 +41,23 @@ namespace GastosPersonales.Controllers
             }
 
             ViewData["FiltroActual"] = buscar;
+            ViewData["OrdenActual"] = ordenActual;
+
+            ViewData["FiltroFecha"] = ordenActual == "FechaAscendente" ? "FechaDescendente" : "FechaAscendente";
+
+            switch (ordenActual)
+            {
+                
+                case "FechaDescendente":
+                    comprobantes = comprobantes.OrderByDescending(comprobantes => comprobantes.Fecha);
+                    break;
+                case "FechaAscendente":
+                    comprobantes = comprobantes.OrderBy(comprobantes => comprobantes.Fecha);
+                    break;
+                default:
+                    
+                    break;
+            }
 
             int cantidadregistros = 8;
 

@@ -38,7 +38,10 @@
                 Detalle
             </th>
             <th>
-                Fecha
+                <a asp-action="Index" asp-route-ordenActual="@ViewData["FiltroFecha"]"
+                   asp-route-filtroActual="@ViewData["FiltroActual"]">
+                    Fecha
+                </a>
             </th>
             <th>
                 Monto

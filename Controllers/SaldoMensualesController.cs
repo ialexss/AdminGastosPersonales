@@ -26,6 +26,7 @@ namespace GastosPersonales.Controllers
         // GET: SaldoMensuales/SearchByYear
         public async Task<IActionResult> SearchByYear(int? year)
         {
+            //Valida que no se pueda buscar en futuro
             if (!year.HasValue || year < 1900 || year > DateTime.Today.Year)
             {
                 return NotFound();
@@ -77,20 +78,41 @@ namespace GastosPersonales.Controllers
             decimal sumaGastos = _context.Comprobante.Where(c => c.Tipo == "Egreso" && c.UserId == userId).Sum(c => c.Costo);
             decimal saldoactual = sumaIngresos - sumaGastos;
 
+            // Establecer valores predeterminados para el mes y el año
+            int mes = DateTime.Now.Month;
+            int año = DateTime.Now.Year;
+
             ViewData["TotalActual"] = saldoactual.ToString(); // Mandamos el total actual a la vista
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["Mes"] = mes;
+            ViewData["Año"] = año;
+
             return View();
         }
+  
 
-        // POST: SaldoMensuales/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Total,Mes,Año,UserId")] SaldoMensual saldoMensual)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             saldoMensual.UserId = userId;
+
+            // Validar si ya existe un saldo mensual para el mismo mes y año
+            bool mesExistente = _context.SaldoMensual.Any(s => s.UserId == userId && s.Mes == saldoMensual.Mes && s.Año == saldoMensual.Año);
+            if (mesExistente)
+            {
+                ModelState.AddModelError(string.Empty, "Ya existe un cierre mensual para este mes y año.");
+            }
+
+            // Validar si estamos en dia 30 del mes
+
+            int dia = DateTime.Now.Day;
+            if (dia != 30)
+            {
+                ModelState.AddModelError(string.Empty, "Solo puedes registrar un cierre de mes el dia 30 de cada mes.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(saldoMensual);
@@ -103,11 +125,19 @@ namespace GastosPersonales.Controllers
             decimal sumaGastos = _context.Comprobante.Where(c => c.Tipo == "Egreso" && c.UserId == userId).Sum(c => c.Costo);
             decimal saldoactual = sumaIngresos - sumaGastos;
 
+            // Establecer valores predeterminados para el mes y el año
+            int mes = DateTime.Now.Month;
+            int año = DateTime.Now.Year;
+
             ViewData["TotalActual"] = saldoactual.ToString(); // Mandamos el total actual a la vista
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", saldoMensual.UserId);
+            ViewData["Mes"] = mes;
+            ViewData["Año"] = año;
+
             //si no es valido
             return View(saldoMensual);
         }
+
 
         // GET: SaldoMensuales/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -140,6 +170,18 @@ namespace GastosPersonales.Controllers
 
             if (ModelState.IsValid)
             {
+                // Validar que el mes no se repita
+                var existingSaldoMensual = await _context.SaldoMensual
+                    .Where(sm => sm.Mes == saldoMensual.Mes && sm.Año == saldoMensual.Año && sm.Id != saldoMensual.Id)
+                    .FirstOrDefaultAsync();
+
+                if (existingSaldoMensual != null)
+                {
+                    ModelState.AddModelError("Mes", "Ya existe un saldo mensual registrado para este mes y año");
+                    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", saldoMensual.UserId);
+                    return View(saldoMensual);
+                }
+
                 try
                 {
                     _context.Update(saldoMensual);
@@ -161,6 +203,7 @@ namespace GastosPersonales.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", saldoMensual.UserId);
             return View(saldoMensual);
         }
+
 
         // GET: SaldoMensuales/Delete/5
         public async Task<IActionResult> Delete(int? id)

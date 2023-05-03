@@ -5,10 +5,10 @@ namespace GastosPersonales.Models
     public class Categoria
     {
         public int Id { get; set; }
-        [Required]
-        [StringLength(35)]
+        [Required(ErrorMessage = "Ingrese un nombre para la categoria")]
+        [StringLength(35, ErrorMessage = "La longitud maxima es 35 caracteres")]
         public string? Nombre { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Obligatorio")]
         public string? TipoCategoria { get; set;}
     }
 }
